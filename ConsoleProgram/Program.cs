@@ -2,6 +2,8 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Net;
+using System.IO;
 
 namespace ConsoleProgram
 {
@@ -9,6 +11,15 @@ namespace ConsoleProgram
     {
         static void Main(string[] args)
         {
+            string url = "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=5&count=1";
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+            using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+            {
+                Console.Write(streamReader.ReadToEnd());
+            }
+
             Quicksort quicksort = new Quicksort();
             Treesort treesort = new Treesort();
 
