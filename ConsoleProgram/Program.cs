@@ -11,15 +11,6 @@ namespace ConsoleProgram
     {
         static void Main(string[] args)
         {
-            string url = "http://www.randomnumberapi.com/api/v1.0/random?min=0&max=5&count=1";
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
-            {
-                Console.Write(streamReader.ReadToEnd());
-            }
-
             Quicksort quicksort = new Quicksort();
             Treesort treesort = new Treesort();
 
@@ -122,6 +113,26 @@ namespace ConsoleProgram
             }
 
             Console.ForegroundColor = ConsoleColor.White;
+
+            string postApi = $"http://www.randomnumberapi.com/api/v1.0/random?min={0}&max={resultLine.Length}&count=100";
+            int delIndex;
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(postApi);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    delIndex = (int)(streamReader.ReadToEnd()[1] - '0');
+                }
+            }
+            catch (WebException)
+            {
+                Random rnd = new Random();
+                delIndex = rnd.Next(0, resultLine.Length);
+            }
+
+            Console.WriteLine(delIndex);
 
 
             Console.Write(" . . . Нажмите любую кнопку, чтобы выйти; Enter, чтобы перезапустить  . . . ");
