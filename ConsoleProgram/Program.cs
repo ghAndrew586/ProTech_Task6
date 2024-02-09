@@ -132,8 +132,8 @@ namespace ConsoleProgram
                 delIndex = rnd.Next(0, resultLine.Length);
             }
 
-            Console.WriteLine(delIndex);
-
+            string delResultLine = resultLine.Remove(delIndex, 1);
+            Console.WriteLine($"<<Урезанная>> строка: {delResultLine}");
 
             Console.Write(" . . . Нажмите любую кнопку, чтобы выйти; Enter, чтобы перезапустить  . . . ");
             char endKey = Console.ReadKey().KeyChar;
