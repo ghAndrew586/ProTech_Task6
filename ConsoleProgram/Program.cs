@@ -2,6 +2,8 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Linq;
+using System.Net;
+using System.IO;
 
 namespace ConsoleProgram
 {
@@ -112,6 +114,26 @@ namespace ConsoleProgram
 
             Console.ForegroundColor = ConsoleColor.White;
 
+            string postApi = $"http://www.randomnumberapi.com/api/v1.0/random?min={0}&max={resultLine.Length}&count=100";
+            int delIndex;
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(postApi);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    delIndex = (int)(streamReader.ReadToEnd()[1] - '0');
+                }
+            }
+            catch (WebException)
+            {
+                Random rnd = new Random();
+                delIndex = rnd.Next(0, resultLine.Length);
+            }
+
+            string delResultLine = resultLine.Remove(delIndex, 1);
+            Console.WriteLine($"<<Урезанная>> строка: {delResultLine}");
 
             Console.Write(" . . . Нажмите любую кнопку, чтобы выйти; Enter, чтобы перезапустить  . . . ");
             char endKey = Console.ReadKey().KeyChar;
